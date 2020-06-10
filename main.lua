@@ -7,20 +7,19 @@ palette = {
 
 }
 
-function love.conf(t)
-    t.window.width = 800
-    t.window.height = 600
-    t.window.title = "Snake"
-end
-
 function love.load()
     Object = require "classic"
     require "menu"
+
+    local spacing = 100
+    local w, h = love.graphics.getDimensions()
+    Menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing)
 end
 
 function love.update(dt)
 end
 
 function love.draw()
+    Menu:draw()
 end
 
