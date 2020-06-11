@@ -24,16 +24,23 @@ end
 
 -- Copy buttons to a new table
 function Menu:addButton(name, on_press, on_release)
-    local new_buttons = {}
-    n = #self.buttons + 1
-    local button_width = 50
-    local button_height = 20
-    for i = 1, n do
-        local x = (self.w / 2) - button_width / 2
-        local y = (i / (n + 1)) * self.h - button_height / 2
-        local button = Button(x, y, button_width, button_height, on_press, on_release)
-        table.insert(new_buttons, button)
+    local n = #self.buttons + 1
+    local button_width = 60
+    local button_height = 30
+    for i = 1, #self.buttons do
+        local button_x = (self.w / 2) - button_width / 2 + self.x
+        local button_y = (i / (n + 1)) * self.h - button_height / 2 + self.y
+        local button = self.buttons[i]
+        button:setX(button_x)
+        button:setY(button_y)
     end
 
-    self.buttons = new_buttons
+    -- Add new button
+    local button_x = (self.w / 2) - button_width / 2 + self.x
+    local button_y = (n / (n + 1)) * self.h - button_height / 2 + self.y
+    local button = Button(button_x, button_y, button_width, button_height)
+    button:setName(name)
+    button:setOnPress(on_press)
+    button:setOnRelease(on_release)
+    table.insert(self.buttons, button)
 end

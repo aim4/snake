@@ -24,16 +24,16 @@ end
 function loadMainMenu()
     local spacing = 100
     local w, h = love.graphics.getDimensions()
-    Menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing)
+    Menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing, spacing)
 
     local hello = function()
         print('hello')
     end
-    Menu:addButton('Start', hello, nil)
+    Menu:addButton("Start", hello, nil)
 
-    local quit = function ()
+    local quit = function()
         love.event.quit()
     end
-    Menu:addButton('Quit', quit, nil)
+    Menu:addButton("Quit", quit, nil)
 end
 
