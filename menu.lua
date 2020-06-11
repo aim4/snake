@@ -21,7 +21,10 @@ end
 function Menu:update(dt)
 end
 
+
+-- Copy buttons to a new table
 function Menu:addButton(name, on_press, on_release)
+    local new_buttons = {}
     n = #self.buttons + 1
     local button_width = 50
     local button_height = 20
@@ -29,6 +32,8 @@ function Menu:addButton(name, on_press, on_release)
         local x = (self.w / 2) - button_width / 2
         local y = (i / (n + 1)) * self.h - button_height / 2
         local button = Button(x, y, button_width, button_height, on_press, on_release)
-        table.insert(self.buttons, button)
+        table.insert(new_buttons, button)
     end
+
+    self.buttons = new_buttons
 end

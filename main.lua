@@ -10,10 +10,8 @@ palette = {
 function love.load()
     Object = require "classic"
     require "menu"
-
-    local spacing = 100
-    local w, h = love.graphics.getDimensions()
-    Menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing)
+    
+    loadMainMenu()
 end
 
 function love.update(dt)
@@ -21,5 +19,21 @@ end
 
 function love.draw()
     Menu:draw()
+end
+
+function loadMainMenu()
+    local spacing = 100
+    local w, h = love.graphics.getDimensions()
+    Menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing)
+
+    local hello = function()
+        print('hello')
+    end
+    Menu:addButton('Start', hello, nil)
+
+    local quit = function ()
+        love.event.quit()
+    end
+    Menu:addButton('Quit', quit, nil)
 end
 
