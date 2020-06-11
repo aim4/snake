@@ -10,30 +10,43 @@ palette = {
 function love.load()
     Object = require "classic"
     require "menu"
+    require "state"
     
+    state = State()
     loadMainMenu()
 end
 
 function love.update(dt)
+    menu:update()
 end
 
 function love.draw()
-    Menu:draw()
+    menu:draw()
 end
+
+function love:keypressed(key)
+    if state.level == "Menu" then
+        if key == "down" then
+            menu:nextButton()
+        elseif key == "up" then
+            menu:prevButton()
+        end
+    end
+end
+
 
 function loadMainMenu()
     local spacing = 100
     local w, h = love.graphics.getDimensions()
-    Menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing, spacing)
+    menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing, spacing)
 
     local hello = function()
-        print('hello')
     end
-    Menu:addButton("Start", hello, nil)
+    menu:addButton("Start", hello, nil)
 
     local quit = function()
         love.event.quit()
     end
-    Menu:addButton("Quit", quit, nil)
+    menu:addButton("Quit", quit, nil)
 end
 

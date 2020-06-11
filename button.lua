@@ -20,7 +20,8 @@ function Button:draw()
     love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
     local f = love.graphics.setNewFont(18)
     local w = f:getWidth(self.name)
-    love.graphics.printf(self.name, self.x, self.y, w, "center")
+    local h = f:getHeight(self.name)
+    love.graphics.printf(self.name, self.x, self.y + h/5, self.w, "center")
     love.graphics.reset()
 end
 
@@ -29,16 +30,10 @@ end
 
 function Button:press()
     self.pressed = true
-    if self.on_press then
-        self.on_press()
-    end
 end
 
 function Button:release()
     self.pressed = false 
-    if self.on_release then
-        self.on_release()
-    end
 end
 
 function Button:setName(name)

@@ -9,6 +9,7 @@ function Menu:new(x, y, w, h)
     self.h = h
 
     self.buttons = {}
+    self.current_button = 0
 end
 
 function Menu:draw()
@@ -43,4 +44,38 @@ function Menu:addButton(name, on_press, on_release)
     button:setOnPress(on_press)
     button:setOnRelease(on_release)
     table.insert(self.buttons, button)
+
+    if #self.buttons > 0 and self.current_button == 0 then
+        self.current_button = 1
+    end
+end
+
+function Menu:nextButton()
+    print("next")
+    local button = self.buttons[self.current_button]
+    button:release()
+
+    self.current_button = (self.current_button + 1) % (#self.buttons + 1)
+    if self.current_button == 0 and #self.buttons > 0 then
+        self.current_button = 1
+    end
+
+    local button = self.buttons[self.current_button]
+    button:press()
+    print(self.current_button)
+end
+
+function Menu:prevButton()
+    print("prev")
+    local button = self.buttons[self.current_button]
+    button:release()
+
+    self.current_button = (self.current_button - 1) % #self.buttons
+    if self.current_button == 0 and #self.buttons > 0 then
+        self.current_button = 2
+    end
+    
+    local button = self.buttons[self.current_button]
+    button:press()
+    print(self.current_button)
 end
