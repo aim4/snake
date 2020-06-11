@@ -1,5 +1,6 @@
 Object = require "classic"
 require "constants"
+require "game"
 require "menu"
 require "state"
 
@@ -13,40 +14,18 @@ palette = {
 }
 
 function love.load()
-    state = State()
-    loadMainMenu()
+    game = Game()
 end
 
 function love.update(dt)
-    if state.level == STATE_MENU then
-        menu:update()
-    end
+    game:update(dt)
 end
 
 function love.draw()
-    menu:draw()
+    game:draw()
 end
 
 function love:keypressed(key)
-    if state.level == STATE_MENU then
-        menu:keypressed(key)
-    end
-end
-
-
-function loadMainMenu()
-    local spacing = 100
-    local w, h = love.graphics.getDimensions()
-    menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing, spacing)
-
-    local hello = function()
-        print("hello")
-    end
-    menu:addButton("Start", hello, nil)
-
-    local quit = function()
-        love.event.quit()
-    end
-    menu:addButton("Quit", quit, nil)
+    game:keypressed(key)
 end
 
