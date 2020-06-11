@@ -6,13 +6,13 @@ function Button:new(x, y, w, h)
     self.w = w
     self.h = h
 
-    self.pressed = false
+    self.hovering = false
     self.name = ""
 end
 
 function Button:draw()
-    if self.pressed then
-        love.graphics.setColor(palette[2])
+    if self.hovering then
+        love.graphics.setColor(palette[3])
         love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
         love.graphics.reset()
     end
@@ -28,12 +28,20 @@ end
 function Button:update(dt)
 end
 
+function Button:toggleHover()
+    self.hovering = not self.hovering
+end
+
 function Button:press()
-    self.pressed = true
+    if self.press then
+        self.press()
+    end
 end
 
 function Button:release()
-    self.pressed = false 
+    if self.release then
+        self.release()
+    end
 end
 
 function Button:setName(name)

@@ -20,6 +20,7 @@ function Menu:draw()
 end
 
 function Menu:update(dt)
+
 end
 
 
@@ -47,35 +48,42 @@ function Menu:addButton(name, on_press, on_release)
 
     if #self.buttons > 0 and self.current_button == 0 then
         self.current_button = 1
+        self.buttons[self.current_button]:toggleHover()
     end
 end
 
 function Menu:nextButton()
     print("next")
     local button = self.buttons[self.current_button]
-    button:release()
+    button:toggleHover()
+    print(self.current_button, button.hovering)
 
     self.current_button = (self.current_button + 1) % (#self.buttons + 1)
     if self.current_button == 0 and #self.buttons > 0 then
         self.current_button = 1
     end
 
-    local button = self.buttons[self.current_button]
-    button:press()
+    button = self.buttons[self.current_button]
+    button:toggleHover()
     print(self.current_button)
+    print(self.current_button, button.hovering)
+
 end
 
 function Menu:prevButton()
     print("prev")
     local button = self.buttons[self.current_button]
-    button:release()
+    button:toggleHover()
+    print(self.current_button, button.hovering)
 
     self.current_button = (self.current_button - 1) % #self.buttons
     if self.current_button == 0 and #self.buttons > 0 then
         self.current_button = 2
     end
     
-    local button = self.buttons[self.current_button]
-    button:press()
+    button = self.buttons[self.current_button]
+    button:toggleHover()
+    print(self.current_button, button.hovering)
+
     print(self.current_button)
 end
