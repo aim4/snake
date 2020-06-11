@@ -52,6 +52,20 @@ function Menu:addButton(name, on_press, on_release)
     end
 end
 
+function Menu:keypressed(key)
+    if key == "down" then
+        self:nextButton()
+    elseif key == "up" then
+        self:prevButton()
+    elseif key == "return" then
+        if self:hoveringButton() then
+            print('press button')
+            local button = self.buttons[self.current_button]
+            button:press()
+        end
+    end
+end
+
 function Menu:nextButton()
     print("next")
     local button = self.buttons[self.current_button]
@@ -86,4 +100,8 @@ function Menu:prevButton()
     print(self.current_button, button.hovering)
 
     print(self.current_button)
+end
+
+function Menu:hoveringButton()
+    return self.current_button > 0
 end

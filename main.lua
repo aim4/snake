@@ -1,3 +1,8 @@
+Object = require "classic"
+require "constants"
+require "menu"
+require "state"
+
 palette = {
     {1.0, 0.0, 0.0, 1.0}, -- red
     {0.0, 1.0, 0.0, 1.0}, -- green
@@ -8,16 +13,14 @@ palette = {
 }
 
 function love.load()
-    Object = require "classic"
-    require "menu"
-    require "state"
-    
     state = State()
     loadMainMenu()
 end
 
 function love.update(dt)
-    menu:update()
+    if state.level == STATE_MENU then
+        menu:update()
+    end
 end
 
 function love.draw()
@@ -25,12 +28,8 @@ function love.draw()
 end
 
 function love:keypressed(key)
-    if state.level == "Menu" then
-        if key == "down" then
-            menu:nextButton()
-        elseif key == "up" then
-            menu:prevButton()
-        end
+    if state.level == STATE_MENU then
+        menu:keypressed(key)
     end
 end
 
@@ -41,6 +40,7 @@ function loadMainMenu()
     menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing, spacing)
 
     local hello = function()
+        print("hello")
     end
     menu:addButton("Start", hello, nil)
 

@@ -33,14 +33,14 @@ function Button:toggleHover()
 end
 
 function Button:press()
-    if self.press then
-        self.press()
+    if self.on_press then
+        self.on_press()
     end
 end
 
 function Button:release()
-    if self.release then
-        self.release()
+    if self.on_release then
+        self.on_release()
     end
 end
 

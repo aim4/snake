@@ -8,7 +8,7 @@ function State:new()
     self.up = false
     self.down = false
     self.score = 0
-    self.level = "Menu"
+    self.level = STATE_MENU
 end
 
 
