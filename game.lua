@@ -1,3 +1,4 @@
+require "snake"
 require "stage"
 require "state"
 
@@ -6,6 +7,7 @@ Game = Object:extend()
 function Game:new()
     self.state = State()
     self.menu = self:loadMainMenu()
+    self.snake = Snake()
 
     local w, h = love.graphics.getDimensions()
     self.stage = Stage(0, 0, w, h)
@@ -22,6 +24,7 @@ function Game:draw()
         self.menu:draw()
     elseif self.state.level == STATE_INGAME then
         self.stage:draw()
+        self.snake:draw()
     end
 end
 
@@ -50,3 +53,20 @@ function Game:loadMainMenu()
     return menu
 end
 
+function Game:snakeCanMove(direction)
+    head = self.snake:getHead()
+    local x = head.x
+    local y = head.y
+
+    if direction == DIR_LEFT then
+        x = x + 1
+    elseif direction == DIR_RIGHT then
+        x = x - 1
+    elseif direction == DIR_UP then
+        y = y - 1
+    elseif direction == DIR_DOWN then
+        y = y + 1
+    end
+
+    return not(x < 0 or x > self.stage:getWidth() or y < 0 or y > self.stage:getHeight())
+end

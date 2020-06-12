@@ -10,3 +10,9 @@ SPACING_GRID = 25
 -- GRID
 GRID_X = 32 
 GRID_Y = 24
+
+-- DIRECTIONS
+DIR_LEFT = "left"
+DIR_RIGHT = "right"
+DIR_UP = "up"
+DIR_DOWN = "down"

@@ -38,3 +38,11 @@ end
 
 function Stage:removeFruit()
 end
+
+function Stage:getWidth()
+    return self.w
+end
+
+function Stage:getHeight()
+    return self.h
+end
