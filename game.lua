@@ -71,7 +71,8 @@ function Game:snakeCanMove(direction)
         y = y + 1
     end
 
-    return not(x < 0 or x > self.stage:getWidth() or y < 0 or y > self.stage:getHeight())
+    print(x, y)
+    return not(x < 0 or x >= GRID_X or y < 0 or y >= GRID_Y)
 end
 
 function isDirection(d)

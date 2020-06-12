@@ -8,6 +8,7 @@ function Stage:new(x, y)
 
     self.w = GRID_X * SPACING_GRID
     self.h = GRID_Y * SPACING_GRID
+    print(self.w, self.h)
 end
 
 function Stage:draw()
