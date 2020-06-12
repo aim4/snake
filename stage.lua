@@ -1,12 +1,13 @@
+require "constants"
+
 Stage = Object:extend()
 
-function Stage:new(x, y, w, h)
+function Stage:new(x, y)
     self.x = x
     self.y = y
-    self.w = w
-    self.h = h
 
-    self.spacing = 25
+    self.w = GRID_X * SPACING_GRID
+    self.h = GRID_Y * SPACING_GRID
 end
 
 function Stage:draw()
@@ -16,13 +17,15 @@ function Stage:draw()
     love.graphics.setColor(1.0, 1.0, 1.0, 0.5)
     
     -- Vertical lines
-    for i = 0, self.w, self.spacing do
-        love.graphics.line(i, 0, i, self.h)
+    for i = 0, GRID_X do
+        local x = i * SPACING_GRID
+        love.graphics.line(x, 0, x, self.h)
     end
     
     -- Horizontal lines
-    for i = 0, self.h, self.spacing do
-        love.graphics.line(0, i, self.w, i)
+    for i = 0, GRID_Y do
+        local y = i * SPACING_GRID
+        love.graphics.line(0, y, self.w, y)
     end
     love.graphics.reset()
 end
@@ -30,4 +33,8 @@ end
 function Stage:update(dt)
 end
 
+function Stage:addFruit()
+end
 
+function Stage:removeFruit()
+end
