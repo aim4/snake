@@ -27,6 +27,7 @@ end
 function Snake:move(direction)
     -- Remove tail. Add new body to head
     table.remove(self.snake_body, #self.snake_body)
+    print(direction)
     if direction == DIR_LEFT then
         self:moveLeft()
     elseif direction == DIR_RIGHT then
@@ -39,17 +40,24 @@ function Snake:move(direction)
 end
 
 function Snake:moveLeft()
-    for i, c in ipairs(snake_body) do
-        local x = c.x + 1
+    local head = self:getHead()
+    table.insert(self.snake_body, 1, {x = head.x - 1, y = head.y})
 end
 
 function Snake:moveRight()
+    local head = self:getHead()
+    table.insert(self.snake_body, 1, {x = head.x + 1, y = head.y})
 end
 
 function Snake:moveUp()
+    local head = self:getHead()
+    table.insert(self.snake_body, 1, {x = head.x, y = head.y - 1})
+
 end
 
 function Snake:moveDown()
+    local head = self:getHead()
+    table.insert(self.snake_body, 1, {x = head.x, y = head.y + 1})
 end
 
 function Snake:getHead()
