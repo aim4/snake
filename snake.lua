@@ -9,9 +9,16 @@ function Snake:new(x, y)
         {x = 1, y = 0},
         {x = 0, y = 0},
     }
+    self.timer = 0
+    self.timeLimit = 0.15
 end
 
 function Snake:update(dt)
+    self.timer = self.timer + dt
+    if self.timer >= self.timeLimit then
+        self.timer = self.timer - self.timeLimit
+        self:move(self.direction)
+    end 
 end
 
 function Snake:draw()
@@ -22,6 +29,10 @@ function Snake:draw()
         love.graphics.rectangle('fill', x, y, SPACING_GRID, SPACING_GRID)
     end
     love.graphics.reset()
+end
+
+function Snake:setDirection(direction)
+    self.direction = direction
 end
 
 function Snake:move(direction)
@@ -62,4 +73,8 @@ end
 
 function Snake:getHead()
     return self.snake_body[1]
+end
+
+function Snake:getDirection()
+    return self.direction
 end

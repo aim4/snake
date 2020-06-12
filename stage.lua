@@ -47,3 +47,4 @@ end
 function Stage:getHeight()
     return self.h
 end
+

@@ -15,7 +15,9 @@ end
 
 function Game:update(dt)
     if self.state.level == STATE_MENU then
-        self.menu:update()
+        self.menu:update(dt)
+    elseif self.state.level == STATE_INGAME then
+        self.snake:update(dt)
     end
 end
 
@@ -33,7 +35,7 @@ function Game:keypressed(key)
         self.menu:keypressed(key)
     elseif self.state.level == STATE_INGAME then
         if isDirection(key) and self:snakeCanMove(key) then
-            self.snake:move(key)
+            self.snake:setDirection(key)
         end
     end
 end
