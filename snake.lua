@@ -11,9 +11,13 @@ function Snake:new(x, y)
     }
     self.timer = 0
     self.timeLimit = 0.15
+    self.is_alive = true
 end
 
 function Snake:update(dt)
+    if not self.is_alive then
+        return
+    end
     self.timer = self.timer + dt
     if self.timer >= self.timeLimit then
         self.timer = self.timer - self.timeLimit
@@ -77,4 +81,12 @@ end
 
 function Snake:getDirection()
     return self.direction
+end
+
+function Snake:getIsAlive()
+    return self.is_alive
+end
+
+function Snake:setIsAlive(is_alive)
+    self.is_alive = is_alive
 end

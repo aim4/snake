@@ -14,9 +14,23 @@ function Game:new()
 end
 
 function Game:update(dt)
+    -- TODO: Check if gameover
+    -- TODO: Check if game paused
+    if self.state.paused then
+        return
+    end
     if self.state.level == STATE_MENU then
         self.menu:update(dt)
     elseif self.state.level == STATE_INGAME then
+        -- Check if snake hit wall
+        local dir = self.snake:getDirection()
+        if not self.snake:getIsAlive() then
+            self.state.game_over = true
+            return
+        end
+        if not self:snakeCanMove(dir) then
+            self.snake:setIsAlive(false)
+        end
         self.snake:update(dt)
     end
 end
@@ -36,6 +50,8 @@ function Game:keypressed(key)
     elseif self.state.level == STATE_INGAME then
         if isDirection(key) and self:snakeCanMove(key) then
             self.snake:setDirection(key)
+        elseif key == "space" then
+            self.state.paused = not self.state.paused
         end
     end
 end
