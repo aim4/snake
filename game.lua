@@ -14,8 +14,10 @@ function Game:new()
 end
 
 function Game:update(dt)
-    -- TODO: Check if gameover
-    -- TODO: Check if game paused
+    -- TODO display game over and paused text
+    if self.state.game_over then
+        return
+    end
     if self.state.paused then
         return
     end
@@ -45,6 +47,10 @@ function Game:draw()
 end
 
 function Game:keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    end
+
     if self.state.level == STATE_MENU then
         self.menu:keypressed(key)
     elseif self.state.level == STATE_INGAME then
