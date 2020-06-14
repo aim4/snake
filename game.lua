@@ -38,6 +38,12 @@ function Game:update(dt)
 end
 
 function Game:draw()
+    if self.state.game_over then
+        drawGameOverText()
+    elseif self.state.paused then
+        drawPauseText()
+    end
+
     if self.state.level == STATE_MENU then
         self.menu:draw()
     elseif self.state.level == STATE_INGAME then
@@ -102,3 +108,26 @@ end
 function isDirection(d)
     return d == DIR_LEFT or d == DIR_RIGHT or d == DIR_UP or d == DIR_DOWN
 end
+
+function drawPauseText()
+    local text = "Paused"
+    love.graphics.setColor(palette[1])
+    local f = love.graphics.setNewFont(18)
+    local w = f:getWidth(text)
+    sw, sh = love.graphics.getDimensions()
+
+    love.graphics.printf(text, sw/2 - w/2, sh/2, w, "center")
+    love.graphics.reset()
+end
+
+function drawGameOverText()
+    local text = "Game Over"
+    love.graphics.setColor(palette[5])
+    local f = love.graphics.setNewFont(18)
+    local w = f:getWidth(text)
+    sw, sh = love.graphics.getDimensions()
+    
+    love.graphics.printf(text, sw/2 - w/2, sh/2, w, "center")
+    love.graphics.reset()
+end
+

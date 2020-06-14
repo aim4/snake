@@ -35,6 +35,7 @@ function Stage:update(dt)
 end
 
 function Stage:addFruit()
+    -- get random x and y
 end
 
 function Stage:removeFruit()
