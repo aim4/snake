@@ -95,6 +95,16 @@ function Snake:moveDown()
     table.insert(self.snake_body, 1, {x = head.x, y = head.y + 1})
 end
 
+function Snake:isSelfColliding()
+    local head = self:getHead()
+    for i, b in ipairs(self.snake_body) do
+        if i ~= 1 and head.x == b.x and head.y == b.y then
+            return true
+        end
+    end
+    return false
+end
+
 function Snake:getHead()
     return self.snake_body[1]
 end
@@ -124,3 +134,4 @@ end
 function Snake:increaseSize()
     self.increasingSize = true
 end
+

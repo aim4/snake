@@ -1,3 +1,4 @@
+lume = require "lume"
 require "snake"
 require "stage"
 require "state"
@@ -9,14 +10,19 @@ function Game:new()
     self.menu = self:loadMainMenu()
     self.snake = Snake()
     self.score = 0
+    self.highscore = 0
 
     local w, h = love.graphics.getDimensions()
     self.stage = Stage(0, 0, w, h)
+    self:load()
 end
 
 function Game:update(dt)
     -- TODO display game over and paused text
     if self.state.game_over then
+        if self.score > self.highscore then
+            self.highscore = self.score
+        end
         return
     end
     if self.state.paused then
@@ -32,7 +38,7 @@ function Game:update(dt)
             return
         end
         self.snake:update(dt)
-         if isOutOfBounds(self.snake:getX(), self.snake:getY()) then
+         if isOutOfBounds(self.snake:getX(), self.snake:getY()) or self.snake:isSelfColliding() then
              print(self.snake:getX(), self.snake:getY())
             self.snake:setIsAlive(false)
         end
@@ -50,6 +56,7 @@ end
 function Game:draw()
     if self.state.game_over then
         self:drawGameOverText()
+        self:drawPlayAgain()
     elseif self.state.paused then
         self:drawPauseText()
     end
@@ -65,12 +72,22 @@ end
 
 function Game:keypressed(key)
     if key == "escape" then
+        self:save()
         love.event.quit()
     end
 
     if self.state.level == STATE_MENU then
         self.menu:keypressed(key)
     elseif self.state.level == STATE_INGAME then
+        if self.state.game_over then
+            if key == "y" then
+                self:clear()
+            elseif key == "n" then
+                self:save()
+                love.event.quit()
+            end
+        end
+
         if isDirection(key) then
             self.snake:setDirection(key)
         elseif key == "space" then
@@ -129,6 +146,18 @@ function Game:drawPauseText()
     love.graphics.reset()
 end
 
+function Game:drawPlayAgain()
+    local text = "Play Again? Y/N"
+    love.graphics.setColor(palette[1])
+    local f = love.graphics.setNewFont(18)
+    local w = f:getWidth(text)
+    sw, sh = love.graphics.getDimensions()
+
+    love.graphics.printf(text, sw/2 - w/2, sh/2 + 20, w, "center")
+    love.graphics.reset()
+end
+
+
 function Game:drawGameOverText()
     local text = "Game Over"
     love.graphics.setColor(palette[5])
@@ -141,10 +170,38 @@ function Game:drawGameOverText()
 end
 
 function Game:drawScore()
-    love.graphics.setColor(1.0, 0.5, 0.0, 0.8)
-    love.graphics.setNewFont(16)
-    love.graphics.print("Score: " .. self.score, 5, 5)
+    love.graphics.setColor(1.0, 0.5, 0.0, 0.75)
+    love.graphics.setNewFont(14)
+    love.graphics.print("High Score: " .. self.highscore, 5, 0)
+    love.graphics.print("Score: " .. self.score, 5, 16)
     love.graphics.reset()
+end
+
+function Game:clear()
+    self.score = 0
+    self.snake = nil
+    self.snake = Snake()
+    self.stage = nil
+    self.stage = Stage(0, 0, w, h)
+
+    self.state.game_over = false
+    self.state.paused = false
+    self.state.level = STATE_INGAME
+end
+
+function Game:save()
+    data = {}
+    data.score = self.highscore
+    serialized = lume.serialize(data)
+    love.filesystem.write("highscore.txt", serialized)
+end
+
+function Game:load()
+    if love.filesystem.getInfo("highscore.txt") then
+        file = love.filesystem.read("highscore.txt")
+        data = lume.deserialize(file)
+        self.highscore = data.score
+    end
 end
 
 function checkCollision(a, b)
