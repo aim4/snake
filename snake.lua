@@ -14,6 +14,7 @@ function Snake:new()
     self.timeLimit = 0.15
     self.is_alive = true
     self.directionQ = {DIR_RIGHT}
+    self.increasingSize = false
 end
 
 function Snake:update(dt)
@@ -57,7 +58,11 @@ end
 function Snake:move(direction)
     -- Remove tail. Add new body to head
     -- Should not be able to move in opposite direction
-    table.remove(self.snake_body, #self.snake_body)
+    if self.increasingSize then
+        self.increasingSize = false 
+    else
+        table.remove(self.snake_body, #self.snake_body)
+    end
     if direction == DIR_LEFT then
         self:moveLeft()
     elseif direction == DIR_RIGHT then
@@ -117,5 +122,5 @@ function Snake:setIsAlive(is_alive)
 end
 
 function Snake:increaseSize()
-    -- Add new tail
+    self.increasingSize = true
 end

@@ -41,6 +41,7 @@ function Game:update(dt)
         if checkCollision(self.snake, self.stage:getFruit()) then
             self.stage:removeFruit()
             self.stage:addFruit()
+            self.snake:increaseSize()
             self.score = self.score + 1
         end
     end
