@@ -43,8 +43,8 @@ function Stage:update(dt)
 end
 
 function Stage:addFruit()
-    local x = math.random(0, GRID_X) * SPACING_GRID
-    local y = math.random(0, GRID_Y) * SPACING_GRID
+    local x = math.random(0, GRID_X - 1) * SPACING_GRID
+    local y = math.random(0, GRID_Y - 1) * SPACING_GRID
     self.fruit = Fruit(x, y, SPACING_GRID)
 end
 

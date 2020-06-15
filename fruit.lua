@@ -11,7 +11,6 @@ function Fruit:draw()
     love.graphics.setColor(1.0, 0.0, 0.0, 1.0)
     love.graphics.rectangle('fill', self.x, self.y, self.length, self.length)
     love.graphics.reset()
-    print(self.x, self.y)
 end
 
 function Fruit:update(dt)
