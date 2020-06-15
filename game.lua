@@ -8,6 +8,7 @@ function Game:new()
     self.state = State()
     self.menu = self:loadMainMenu()
     self.snake = Snake()
+    self.score = 0
 
     local w, h = love.graphics.getDimensions()
     self.stage = Stage(0, 0, w, h)
@@ -30,18 +31,28 @@ function Game:update(dt)
             self.state.game_over = true
             return
         end
-        if not self:snakeCanMove(dir) then
+        self.snake:update(dt)
+         if isOutOfBounds(self.snake:getX(), self.snake:getY()) then
+             print(self.snake:getX(), self.snake:getY())
             self.snake:setIsAlive(false)
         end
-        self.snake:update(dt)
+       
+        -- Check if got fruit
+        if checkCollision(self.snake, self.stage:getFruit()) then
+            self.stage:removeFruit()
+            self.stage:addFruit()
+            self.score = self.score + 1
+        end
     end
 end
 
 function Game:draw()
+    self:drawScore()
+
     if self.state.game_over then
-        drawGameOverText()
+        self:drawGameOverText()
     elseif self.state.paused then
-        drawPauseText()
+        self:drawPauseText()
     end
 
     if self.state.level == STATE_MENU then
@@ -60,7 +71,7 @@ function Game:keypressed(key)
     if self.state.level == STATE_MENU then
         self.menu:keypressed(key)
     elseif self.state.level == STATE_INGAME then
-        if isDirection(key) and self:snakeCanMove(key) then
+        if isDirection(key) then
             self.snake:setDirection(key)
         elseif key == "space" then
             self.state.paused = not self.state.paused
@@ -87,29 +98,27 @@ function Game:loadMainMenu()
 end
 
 function Game:snakeCanMove(direction)
-    head = self.snake:getHead()
-    local x = head.x
-    local y = head.y
+    local x = self.snake:getX() 
+    local y = self.snake:getY()
 
     if direction == DIR_LEFT then
-        x = x - 1
+        x = x - SPACING_GRID
     elseif direction == DIR_RIGHT then
-        x = x + 1
+        x = x + SPACING_GRID
     elseif direction == DIR_UP then
-        y = y - 1
+        y = y - SPACING_GRID
     elseif direction == DIR_DOWN then
-        y = y + 1
+        y = y + SPACING_GRID
     end
 
-    print(x, y)
-    return not(x < 0 or x >= GRID_X or y < 0 or y >= GRID_Y)
+    return not isOutOfBounds(x, y)
 end
 
 function isDirection(d)
     return d == DIR_LEFT or d == DIR_RIGHT or d == DIR_UP or d == DIR_DOWN
 end
 
-function drawPauseText()
+function Game:drawPauseText()
     local text = "Paused"
     love.graphics.setColor(palette[1])
     local f = love.graphics.setNewFont(18)
@@ -120,7 +129,7 @@ function drawPauseText()
     love.graphics.reset()
 end
 
-function drawGameOverText()
+function Game:drawGameOverText()
     local text = "Game Over"
     love.graphics.setColor(palette[5])
     local f = love.graphics.setNewFont(18)
@@ -129,5 +138,19 @@ function drawGameOverText()
     
     love.graphics.printf(text, sw/2 - w/2, sh/2, w, "center")
     love.graphics.reset()
+end
+
+function Game:drawScore()
+    love.graphics.setColor(0.5, 0.5, 0.0, 0.8)
+    love.graphics.print("Score: " .. self.score, 10, 10)
+    love.graphics.reset()
+end
+
+function checkCollision(a, b)
+    return a:getX() == b:getX() and a:getY() == b:getY()
+end
+
+function isOutOfBounds(x, y)
+    return (x < 0 or x >= GRID_X * SPACING_GRID or y < 0 or y >= GRID_Y * SPACING_GRID)
 end
 

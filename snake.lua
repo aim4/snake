@@ -1,8 +1,10 @@
+require "constants"
+
 Snake = Object:extend()
 
-function Snake:new(x, y)
-    self.x = x
-    self.y = y
+function Snake:new()
+--    self.x = x
+--    self.y = y
     self.direction = DIR_RIGHT -- default
     self.snake_body = {
         {x = 2, y = 0},
@@ -42,7 +44,6 @@ end
 function Snake:move(direction)
     -- Remove tail. Add new body to head
     table.remove(self.snake_body, #self.snake_body)
-    print(direction)
     if direction == DIR_LEFT then
         self:moveLeft()
     elseif direction == DIR_RIGHT then
@@ -83,6 +84,16 @@ function Snake:getDirection()
     return self.direction
 end
 
+function Snake:getX()
+    local head = self:getHead()
+    return head.x * SPACING_GRID
+end
+
+function Snake:getY()
+    local head = self:getHead()
+    return head.y * SPACING_GRID
+end
+
 function Snake:getIsAlive()
     return self.is_alive
 end
@@ -90,3 +101,4 @@ end
 function Snake:setIsAlive(is_alive)
     self.is_alive = is_alive
 end
+

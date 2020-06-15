@@ -1,4 +1,5 @@
 require "constants"
+require "fruit"
 
 Stage = Object:extend()
 
@@ -9,6 +10,9 @@ function Stage:new(x, y)
     self.w = GRID_X * SPACING_GRID
     self.h = GRID_Y * SPACING_GRID
     print(self.w, self.h)
+
+    math.randomseed(os.time())
+    self:addFruit()
 end
 
 function Stage:draw()
@@ -28,6 +32,10 @@ function Stage:draw()
         local y = i * SPACING_GRID
         love.graphics.line(0, y, self.w, y)
     end
+
+    if self.fruit then
+        self.fruit:draw()
+    end
     love.graphics.reset()
 end
 
@@ -35,10 +43,13 @@ function Stage:update(dt)
 end
 
 function Stage:addFruit()
-    -- get random x and y
+    local x = math.random(0, GRID_X) * SPACING_GRID
+    local y = math.random(0, GRID_Y) * SPACING_GRID
+    self.fruit = Fruit(x, y, SPACING_GRID)
 end
 
 function Stage:removeFruit()
+    self.fruit = nil
 end
 
 function Stage:getWidth()
@@ -49,3 +60,6 @@ function Stage:getHeight()
     return self.h
 end
 
+function Stage:getFruit()
+    return self.fruit
+end
