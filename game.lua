@@ -39,7 +39,6 @@ function Game:update(dt)
         end
         self.snake:update(dt)
          if isOutOfBounds(self.snake:getX(), self.snake:getY()) or self.snake:isSelfColliding() then
-             print(self.snake:getX(), self.snake:getY())
             self.snake:setIsAlive(false)
         end
        
@@ -102,7 +101,6 @@ function Game:loadMainMenu()
     local menu = Menu(spacing, spacing, w - 2 * spacing, h - 2 * spacing, spacing)
 
     local hello = function()
-        print("hello")
         self.state.level = STATE_INGAME
     end
     menu:addButton("Start", hello, nil)

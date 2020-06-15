@@ -6,11 +6,10 @@ Stage = Object:extend()
 function Stage:new(x, y)
     self.x = x
     self.y = y
-
+    
     self.w = GRID_X * SPACING_GRID
     self.h = GRID_Y * SPACING_GRID
-    print(self.w, self.h)
-
+    
     math.randomseed(os.time())
     self:addFruit()
 end
