@@ -47,8 +47,6 @@ function Game:update(dt)
 end
 
 function Game:draw()
-    self:drawScore()
-
     if self.state.game_over then
         self:drawGameOverText()
     elseif self.state.paused then
@@ -58,6 +56,7 @@ function Game:draw()
     if self.state.level == STATE_MENU then
         self.menu:draw()
     elseif self.state.level == STATE_INGAME then
+        self:drawScore()
         self.stage:draw()
         self.snake:draw()
     end
@@ -141,8 +140,9 @@ function Game:drawGameOverText()
 end
 
 function Game:drawScore()
-    love.graphics.setColor(0.5, 0.5, 0.0, 0.8)
-    love.graphics.print("Score: " .. self.score, 10, 10)
+    love.graphics.setColor(1.0, 0.5, 0.0, 0.8)
+    love.graphics.setNewFont(16)
+    love.graphics.print("Score: " .. self.score, 5, 5)
     love.graphics.reset()
 end
 

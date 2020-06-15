@@ -5,7 +5,6 @@ Snake = Object:extend()
 function Snake:new()
 --    self.x = x
 --    self.y = y
-    self.direction = DIR_RIGHT -- default
     self.snake_body = {
         {x = 2, y = 0},
         {x = 1, y = 0},
@@ -14,6 +13,7 @@ function Snake:new()
     self.timer = 0
     self.timeLimit = 0.15
     self.is_alive = true
+    self.directionQ = {DIR_RIGHT}
 end
 
 function Snake:update(dt)
@@ -23,7 +23,11 @@ function Snake:update(dt)
     self.timer = self.timer + dt
     if self.timer >= self.timeLimit then
         self.timer = self.timer - self.timeLimit
-        self:move(self.direction)
+        if #self.directionQ > 1 then
+            table.remove(self.directionQ, 1)
+        end
+
+        self:move(self.directionQ[1])
     end 
 end
 
@@ -38,11 +42,21 @@ function Snake:draw()
 end
 
 function Snake:setDirection(direction)
-    self.direction = direction
+    local n = #self.directionQ
+    if (self.directionQ[n] == DIR_LEFT and direction == DIR_RIGHT)
+        or (self.directionQ[n] == DIR_RIGHT and direction == DIR_LEFT)
+        or (self.directionQ[n] == DIR_UP and direction == DIR_DOWN)
+        or (self.directionQ[n] == DIR_DOWN and direction == DIR_UP) then
+        return
+    end
+
+
+    table.insert(self.directionQ, direction)
 end
 
 function Snake:move(direction)
     -- Remove tail. Add new body to head
+    -- Should not be able to move in opposite direction
     table.remove(self.snake_body, #self.snake_body)
     if direction == DIR_LEFT then
         self:moveLeft()
@@ -81,7 +95,7 @@ function Snake:getHead()
 end
 
 function Snake:getDirection()
-    return self.direction
+    return self.directionQ[1]
 end
 
 function Snake:getX()
@@ -102,3 +116,6 @@ function Snake:setIsAlive(is_alive)
     self.is_alive = is_alive
 end
 
+function Snake:increaseSize()
+    -- Add new tail
+end
